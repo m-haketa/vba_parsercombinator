@@ -11,9 +11,9 @@ Option Explicit
 
 Implements iParser
 
-Dim m_Parser As iParser
+Private m_Parser As iParser
 
-Sub Init(iParser As iParser)
+Sub SetCallback(iParser As iParser)
   Set m_Parser = iParser
 End Sub
 

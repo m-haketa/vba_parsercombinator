@@ -1,12 +1,18 @@
 Attribute VB_Name = "F"
 Option Explicit
 
-Function ParserOutput(Success As Boolean, Result As String, NewPosition As Long) As ParserOutput
+Function ParserOutput(Success As Boolean, Result As Variant, NewPosition As Long) As ParserOutput
   Dim PO As ParserOutput
   Set PO = New ParserOutput
   
   PO.Success = Success
-  PO.Result = Result
+  
+  If IsObject(Result) Then
+    Set PO.Result = Result
+  Else
+    PO.Result = Result
+  End If
+  
   PO.NewPosition = NewPosition
   
   Set ParserOutput = PO
@@ -37,9 +43,7 @@ Function Choice(ParamArray iParsers()) As Choice
   
   Dim No As Long
   For No = LBound(iParsers) To UBound(iParsers)
-    Dim P As iParser
-    Set P = iParsers(No)
-    Set Parsers(No) = P
+    Set Parsers(No) = iParsers(No)
   Next
   
   Call Choice.Init(Parsers)
@@ -68,7 +72,7 @@ Function RegEx(Pattern As String, Optional IgnoreCase As Boolean = False, Option
   Set RegEx = New RegEx
   
   If Left(Pattern, 1) <> "^" Then
-    Pattern = "^" & Pattern
+    Pattern = "^(?:" & Pattern & ")"
   End If
   
   Call RegEx.Init(getRegExp(Pattern, IgnoreCase))
@@ -86,8 +90,20 @@ Function getRegExp(Pattern As String, Optional IgnoreCase As Boolean = False, Op
 End Function
 
 
-Function Lazy(Callback As iParser) As Lazy
-  Set Lazy = New Lazy
-  Call Lazy.Init(Callback)
+Function Map(iParser As iParser, iMapCallback As iMapCallback) As Map
+  Set Map = New Map
+  Call Map.Init(iParser, iMapCallback)
 End Function
+
+
+Function Char(Chars As String) As Char
+  Set Char = New Char
+  Call Char.Init(Chars)
+End Function
+
+
+'Function Lazy(Callback As iParser) As Lazy
+'  Set Lazy = New Lazy
+'  Call Lazy.Init(Callback)
+'End Function
 

@@ -19,15 +19,15 @@ End Sub
 
 
 Function iParser_Parse(ByVal Target As String, ByVal Position As Long) As ParserOutput
-  Dim Result As String
-  Result = ""
+  Dim Result As Collection
+  Set Result = New Collection
   
   Do
     Dim Parsed As ParserOutput
     Set Parsed = m_Parser.Parse(Target, Position)
     
     If Parsed.Success Then
-      Result = Result + Parsed.Result
+      Call Result.Add(Parsed.Result)
       Position = Parsed.NewPosition
     Else
       Exit Do

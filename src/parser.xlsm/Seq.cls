@@ -19,8 +19,8 @@ End Sub
 
 
 Function iParser_Parse(ByVal Target As String, ByVal Position As Long) As ParserOutput
-  Dim Result As String
-  Result = ""
+  Dim Result As Collection
+  Set Result = New Collection
   
   Dim NewPosition As Long
   NewPosition = Position
@@ -32,10 +32,10 @@ Function iParser_Parse(ByVal Target As String, ByVal Position As Long) As Parser
     Set Parsed = m_Parsers(No).Parse(Target, NewPosition)
     
     If Parsed.Success Then
-      Result = Result + Parsed.Result
+      Call Result.Add(Parsed.Result)
       NewPosition = Parsed.NewPosition
     Else
-      Set iParser_Parse = F.ParserOutput(False, "", Position)
+      Set iParser_Parse = F.ParserOutput(False, Result, Position)
       Exit Function
     End If
   Next

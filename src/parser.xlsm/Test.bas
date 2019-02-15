@@ -17,18 +17,18 @@ Sub testFormula()
   Set Atom = F.Choice(Number, Parenthesis)
   
   Dim Expression As iParser
-  Set Expression = F.Map(F.Seq(Atom, F.Many(F.Seq(Operator, Atom))), New MapReduce)
+  Set Expression = F.Map(F.Seq(Atom, F.Many(F.Seq(Operator, Atom))), New MapFlattenSeqManySeq)
   
-  Call Parenthesis.SetCallback(F.Seq(F.Token("("), Expression, F.Token(")")))
+  Call Parenthesis.SetCallback(F.Map(F.Seq(F.Token("("), Expression, F.Token(")")), New MapDeleteParenthesis))
   
   Debug.Print F.Parse(Expression, "1+2+3+4", 1)
   
   Debug.Print F.Parse(Expression, "1+(2-3)+4", 1)
 
-'  Debug.Print F.Parse(Expression, "2-10+5", 1)
-'  Debug.Print F.Parse(Expression, "10+(0-30)+4", 1)
-'  Debug.Print F.Parse(Expression, "12", 1)
-'  Debug.Print F.Parse(Expression, "1+1", 1)
+  Debug.Print F.Parse(Expression, "2-10+5", 1)
+  Debug.Print F.Parse(Expression, "10+(0-30)+4", 1)
+  Debug.Print F.Parse(Expression, "12", 1)
+  Debug.Print F.Parse(Expression, "1+1", 1)
   
   
 End Sub

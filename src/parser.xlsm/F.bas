@@ -19,7 +19,7 @@ Function ParserOutput(Success As Boolean, Result As Variant, NewPosition As Long
 End Function
 
 
-Function Parse(Parser As iParser, Target As String, Position As Long) As ParserOutput
+Function Parse(Parser As iParser, Target As String, Optional Position As Long = 1) As ParserOutput
   Set Parse = Parser.Parse(Target, Position)
 End Function
 
